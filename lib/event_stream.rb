@@ -15,8 +15,10 @@ class EventStream
       attributes = event.instance_variables.each_with_object({}) do |key, result|
         result[key.to_s[1..-1]] = event.instance_variable_get(key)
       end
+      # add type attribute
+      attributes = attributes.merge(type: event_type(event))
       # serialize to JSON
-      Oj.dump(attributes)
+      Oj.dump(attributes))
     end
   end
 
@@ -27,7 +29,6 @@ class EventStream
 
   def push(event)
     @producer.produce(
-      self.class.event_type(event),
       self.class.serialize_event(event),
       topic: @topic
     )
