@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'logger'
+require 'securerandom'
 
 require_relative 'models/cart'
 require_relative 'models/product'
@@ -13,6 +14,8 @@ enable :sessions
 
 configure do
   set :server, :puma
+
+  set :session_secret, ENV.fetch('SECRET_KEY_BASE') { SecureRandom.hex(64) }
 
   if ENV['KAFKA_URL']
     require 'kafka'
