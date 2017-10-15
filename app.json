@@ -38,7 +38,7 @@
   ],
   "addons": [
     {
-      "plan": "heroku-kafka"
+      "plan": "heroku-kafka:basic-0"
     }
   ]
 }
