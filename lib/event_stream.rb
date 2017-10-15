@@ -18,7 +18,7 @@ class EventStream
       # add type attribute
       attributes = attributes.merge(type: event_type(event))
       # serialize to JSON
-      Oj.dump(attributes))
+      Oj.dump(attributes)
     end
   end
 
