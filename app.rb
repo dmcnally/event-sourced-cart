@@ -41,7 +41,9 @@ configure do
 
     at_exit { $kafka_producer.shutdown }
 
-    set :event_stream, EventStream.new($kafka_producer)
+    kafka_topic = ENV.fetch('KAFKA_TOPIC') { 'ecommerce' }
+
+    set :event_stream, EventStream.new(producer: $kafka_producer, topic: kafka_topic)
   else
     set :event_stream, []
   end
