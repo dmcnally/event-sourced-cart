@@ -1,0 +1,44 @@
+{
+  "name": "event-sourced-cart",
+  "description": "CQRS ecommerce cart that publishes Kafka events",
+  "keywords": [
+    "sinatra",
+    "ruby",
+    "kafka"
+  ],
+  "website": "https://github.com/ryantownsend/event-sourced-cart",
+  "repository": "https://github.com/ryantownsend/event-sourced-cart",
+  "success_url": "/",
+  "stack": "heroku-16",
+  "image": "heroku/ruby",
+  "env": {
+    "WEB_CONCURRENCY": {
+      "description": "The number of Puma web processes.",
+      "value": "2"
+    },
+    "WEB_THREADS": {
+      "description": "The number of Puma web threads.",
+      "value": "5"
+    },
+    "RACK_ENV": {
+      "description": "The Rack environment to use.",
+      "value": "production"
+    },
+    "SECRET_KEY_BASE": {
+      "description": "The secret key required for sessions.",
+      "generator": "secret"
+    }
+  },
+  "formation": [
+    {
+      "process": "web",
+      "quantity": 1,
+      "size": "free"
+    }
+  ],
+  "addons": [
+    {
+      "plan": "heroku-kafka"
+    }
+  ]
+}
