@@ -29,13 +29,7 @@ class EventStream
     @producer.produce(
       self.class.event_type(event),
       self.class.serialize_event(event),
-      topic: topic
+      topic: @topic
     )
-  end
-
-  private
-
-  def event_name(event)
-
   end
 end
