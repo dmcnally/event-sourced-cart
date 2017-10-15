@@ -1,9 +1,13 @@
 require 'sinatra'
 require 'logger'
 require 'securerandom'
+require 'rack/ssl'
+require 'kafka'
 
 require_relative 'models/cart'
 require_relative 'models/product'
+
+require_relative 'lib/event_stream'
 
 require_relative 'commands/add_item_to_cart'
 require_relative 'commands/place_order'
@@ -12,15 +16,16 @@ require_relative 'commands/update_cart_item_quantity'
 
 enable :sessions
 
+configure :production do
+  use Rack::SSL
+end
+
 configure do
   set :server, :puma
 
   set :session_secret, ENV.fetch('SECRET_KEY_BASE') { SecureRandom.hex(64) }
 
   if ENV['KAFKA_URL']
-    require 'kafka'
-    require_relative 'lib/event_stream'
-
     $kafka = Kafka.new(
       client_id: "#{ENV['KAFKA_PREFIX']}carts",
       seed_brokers: ENV.fetch('KAFKA_URL','').split(','),

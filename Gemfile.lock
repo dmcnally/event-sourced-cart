@@ -17,6 +17,8 @@ GEM
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
+    rack-ssl (1.4.1)
+      rack
     ruby-kafka (0.4.2)
     sinatra (2.0.0)
       mustermann (~> 1.0)
@@ -35,6 +37,7 @@ DEPENDENCIES
   activemodel (= 5.1.4)
   oj (= 3.3.8)
   puma (= 3.10.0)
+  rack-ssl (= 1.4.1)
   ruby-kafka (= 0.4.2)
   sinatra (= 2.0.0)
 
