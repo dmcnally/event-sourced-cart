@@ -1,0 +1,13 @@
+<h1>Thank you for your order!</h1>
+
+<ul>
+  <% line_items.each do |line_item| %>
+    <li>
+      <%= line_item.quantity %> &times; <%= line_item.product.title %>
+    </li>
+  <% end %>
+</ul>
+
+<p><strong>Total: $<%= sprintf("%.2f", BigDecimal(line_items.map(&:total).reduce(:+)) / 100) %></strong></p>
+
+<p><a href='/'>Continue shopping&hellip;</a></p>

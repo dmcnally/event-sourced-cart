@@ -1,0 +1,42 @@
+<% if cart.empty? %>
+  <p>Your cart is empty &mdash; <a href='/'>add some items</a>.</p>
+<% else %>
+
+  <ul>
+    <% cart.line_items.each do |line_item| %>
+      <li>
+        <%= line_item.quantity %> &times; <%= line_item.product.title %>
+        <form action='/update_cart_item_quantity' method='post'>
+          <input type='hidden' name='product_id' value='<%= line_item.product_id %>' />
+
+          <select name='quantity'>
+            <% 0.upto([10, line_item.quantity].max) do |i| %>
+              <option
+                value='<%= i %>'
+                <% if i == line_item.quantity %> selected<% end %>
+              ><%= i %></option>
+            <% end %>
+          </select>
+
+          <button type='submit'>Update quantity</button>
+        </form>
+
+        <form action='/remove_item_from_cart' method='post'>
+          <input type='hidden' name='product_id' value='<%= line_item.product_id %>' />
+          <button type='submit'>Remove item</button>
+        </form>
+      </li>
+    <% end %>
+  </ul>
+
+  <p><strong>Total: $<%= sprintf("%.2f", BigDecimal(cart.total) / 100) %></strong></p>
+
+  <form action='/place_order' method='post'>
+    <button type='submit'>Place order</button>
+  </form>
+
+  <p>* Placing orders won't actually process anything</p>
+
+  <p><a href='/'>Add more items</a></p>
+
+<% end %>

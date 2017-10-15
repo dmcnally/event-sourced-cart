@@ -1,0 +1,15 @@
+<% products.each do |product| %>
+  <h1><%= product.id %>: <%= product.title %></h1>
+
+  <form action='/add_item_to_cart' method='post'>
+    <input type='hidden' name='product_id' value='<%= product.id %>' />
+
+    <select name='quantity'>
+      <% 1.upto(10) do |i| %>
+        <option value='<%= i %>'><%= i %></option>
+      <% end %>
+    </select>
+
+    <button type='submit'>Add to cart</button>
+  </form>
+<% end %>
