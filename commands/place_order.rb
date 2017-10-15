@@ -19,6 +19,8 @@ class PlaceOrder
       stream.push PlacedOrder.new(
         cart_id: cart.id
       )
+      # return success
+      true
     end
   end
 

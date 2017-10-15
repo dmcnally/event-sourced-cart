@@ -24,6 +24,8 @@ class UpdateCartItemQuantity
         quantity: quantity,
         cart_id: cart.id
       )
+      # return success
+      true
     end
   end
 
