@@ -17,7 +17,8 @@ class PlaceOrder
       cart.reset!
       # add the event to the stream
       stream.push PlacedOrder.new(
-        cart_id: cart.id
+        cart_id: cart.id,
+        timestamp: Time.now.utc
       )
       # return success
       true

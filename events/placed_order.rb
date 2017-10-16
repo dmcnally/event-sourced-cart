@@ -3,5 +3,5 @@ require 'active_model'
 class PlacedOrder
   include ActiveModel::Model
 
-  attr_accessor :cart_id
+  attr_accessor :cart_id, :timestamp
 end
