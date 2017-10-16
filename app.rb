@@ -43,7 +43,7 @@ configure do
 
     kafka_topic = ENV.fetch('KAFKA_TOPIC') { 'ecommerce' }
 
-    set :event_stream, EventStream.new(producer: $kafka_producer, topic: "#{ENV['KAFKA_PREFIX']}#{kafka_topic}")
+    set :event_stream, EventStream.new(producer: $kafka_producer, topic_prefix: ENV['KAFKA_PREFIX'])
   else
     set :event_stream, []
   end

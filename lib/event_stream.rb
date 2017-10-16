@@ -22,15 +22,15 @@ class EventStream
     end
   end
 
-  def initialize(producer:, topic:)
+  def initialize(producer:, topic_prefix: '')
     @producer = producer
-    @topic = topic
+    @topic_prefix = topic_prefix
   end
 
   def push(event)
     @producer.produce(
       self.class.serialize_event(event),
-      topic: @topic
+      topic: "#{@topic_prefix}#{event.class.topic}"
     )
   end
 end
