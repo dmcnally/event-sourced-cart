@@ -106,7 +106,7 @@ post '/place_order' do
   )
 
   if command.execute(settings.event_stream)
-    erb :order_confirmation, locals: { line_items: line_items }
+    erb :order_confirmation, locals: { line_items: line_items, order_id: command.order_id }
   else
     [200, {}, command.errors.full_messages.join("\n")]
   end

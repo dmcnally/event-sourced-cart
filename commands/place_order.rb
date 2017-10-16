@@ -11,15 +11,27 @@ class PlaceOrder
 
   validate :validate_cart_isnt_empty
 
+  def order_id
+    @order_id ||= SecureRandom.uuid
+  end
+
   def execute(stream)
     if valid?
-      # reset the cart
-      cart.reset!
       # add the event to the stream
       stream.push PlacedOrder.new(
-        cart_id: cart.id,
+        cart_id: cart_id,
+        order_id: order_id,
+        line_items: cart.line_items.map { |li|
+          {
+            title: li.product.title,
+            quantity: li.quantity,
+            price: li.product.price
+          }
+        },
         timestamp: Time.now.utc
       )
+      # reset the cart
+      cart.reset!
       # return success
       true
     end
