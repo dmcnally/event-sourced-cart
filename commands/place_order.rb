@@ -19,7 +19,7 @@ class PlaceOrder
     if valid?
       # add the event to the stream
       stream.push PlacedOrder.new(
-        cart_id: cart_id,
+        cart_id: cart.id,
         order_id: order_id,
         line_items: cart.line_items.map { |li|
           {
