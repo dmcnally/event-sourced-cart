@@ -20,7 +20,8 @@ class RemoveItemFromCart
       # add the event to the stream
       stream.push RemovedItemFromCart.new(
         product_id: product_id,
-        cart_id: cart.id
+        cart_id: cart.id,
+        timestamp: Time.now.utc
       )
       # return success
       true

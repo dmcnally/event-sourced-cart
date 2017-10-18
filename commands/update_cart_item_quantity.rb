@@ -22,7 +22,8 @@ class UpdateCartItemQuantity
       stream.push UpdatedCartItemQuantity.new(
         product_id: product_id,
         quantity: quantity,
-        cart_id: cart.id
+        cart_id: cart.id,
+        timestamp: Time.now.utc
       )
       # return success
       true
