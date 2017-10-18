@@ -16,7 +16,7 @@ class EventStream
         result[key.to_s[1..-1]] = event.instance_variable_get(key)
       end
       # add type attribute
-      attributes = attributes.merge(type: event_type(event))
+      attributes = attributes.merge('type' => event_type(event))
       # serialize to JSON
       Oj.dump(attributes)
     end
