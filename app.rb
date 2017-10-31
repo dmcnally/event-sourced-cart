@@ -50,11 +50,15 @@ configure do
 end
 
 get '/' do
-  erb :product_index, locals: { products: Product.all }
+  erb :product_index, layout: :layout, locals: { products: Product.all, cart: Cart.new(session) }
 end
 
 get '/cart' do
-  erb :cart, locals: { cart: Cart.new(session) }
+  erb :cart, layout: :layout, locals: {
+    cart: Cart.new(session),
+    added: params[:added],
+    removed: params[:removed]
+  }
 end
 
 post '/add_item_to_cart' do
@@ -65,7 +69,7 @@ post '/add_item_to_cart' do
   )
 
   if command.execute(settings.event_stream)
-    [302, { 'Location' => '/cart' }, '']
+    [302, { 'Location' => "/cart?added=#{params['product_id']}" }, '']
   else
     [200, {}, command.errors.full_messages.join("\n")]
   end
@@ -78,7 +82,7 @@ post '/remove_item_from_cart' do
   )
 
   if command.execute(settings.event_stream)
-    [302, { 'Location' => '/cart' }, '']
+    [302, { 'Location' => "/cart?removed=#{params['product_id']}" }, '']
   else
     [200, {}, command.errors.full_messages.join("\n")]
   end
@@ -106,7 +110,7 @@ post '/place_order' do
   )
 
   if command.execute(settings.event_stream)
-    erb :order_confirmation, locals: { line_items: line_items, order_id: command.order_id }
+    erb :order_confirmation, layout: :layout, locals: { line_items: line_items, order_id: command.order_id }
   else
     [200, {}, command.errors.full_messages.join("\n")]
   end

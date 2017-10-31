@@ -10,6 +10,10 @@ class Product
       end
     end
 
+    def find(id)
+      all.find { |p| Integer(p.id) == Integer(id) }
+    end
+
     def exist?(id)
       all.any? { |p| Integer(p.id) == Integer(id) }
     end
@@ -17,5 +21,5 @@ class Product
 
   include ActiveModel::Model
 
-  attr_accessor :id, :title, :price
+  attr_accessor :id, :title, :price, :photo
 end

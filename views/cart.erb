@@ -1,5 +1,13 @@
+<% if added %>
+  <div class='c-notice c-notice--positive'>Added <%= Product.find(added)&.title %> to your cart.</div>
+<% elsif removed %>
+  <div class='c-notice c-notice--positive'>Removed <%= Product.find(removed)&.title %> from your cart.</div>
+<% end %>
+
 <% if cart.empty? %>
-  <p>Your cart is empty &mdash; <a href='/'>add some items</a>.</p>
+  <p class='c-notice c-notice--negative'>Your cart is empty.</p>
+
+  <a class='c-cart-btn' href='/'>Browse the catalog</a>
 <% else %>
 
   <ul>
@@ -38,5 +46,7 @@
   <p>* Placing orders won't actually process anything</p>
 
   <p><a href='/'>Add more items</a></p>
+
+  <a class='c-cart-btn' href='/'>Add more items</a>
 
 <% end %>

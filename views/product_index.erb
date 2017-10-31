@@ -1,15 +1,24 @@
-<% products.each do |product| %>
-  <h1><%= product.id %>: <%= product.title %></h1>
+<div class='c-product-grid'>
+  <% products.each do |product| %>
+    <div>
+      <div class='c-product-result'>
+        <img src='/<%= product.photo %>.jpg' class='c-product-result__photo' />
 
-  <form action='/add_item_to_cart' method='post'>
-    <input type='hidden' name='product_id' value='<%= product.id %>' />
+        <h1 class='c-product-result__name'><%= product.title %></h1>
 
-    <select name='quantity'>
-      <% 1.upto(10) do |i| %>
-        <option value='<%= i %>'><%= i %></option>
-      <% end %>
-    </select>
+        <form action='/add_item_to_cart' method='post' class='c-product-result__add_to_cart'>
+          <input type='hidden' name='product_id' value='<%= product.id %>' />
+          <input type='hidden' name='quantity' value='1' />
 
-    <button type='submit'>Add to cart</button>
-  </form>
+          <button class='c-product-result__add_to_cart__button' type='submit'>Add to cart</button>
+        </form>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if cart.empty? %>
+  <div class='c-cart-btn c-cart-btn--disabled'>View Cart (0)</div>
+<% else %>
+  <a class='c-cart-btn' href='/cart'>View Cart (<%= cart.size %>)</a>
 <% end %>

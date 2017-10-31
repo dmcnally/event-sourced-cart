@@ -23,6 +23,10 @@ class Cart
     line_items.map(&:total).reduce(:+)
   end
 
+  def size
+    line_items.map(&:quantity).reduce(:+)
+  end
+
   def line_items
     @session[ITEMS_KEY].each_with_object([]) do |(product_id, quantity), result|
       if quantity > 0
