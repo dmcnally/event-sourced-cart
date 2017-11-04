@@ -18,3 +18,13 @@
   title: The Best Interface Is No Interface
   price: 2198
   photo: the-best-interface-is-no-interface
+-
+  id: 5
+  title: Rework
+  price: 779
+  photo: 37signals-rework
+-
+  id: 6
+  title: Traction
+  price: 1378
+  photo: traction
