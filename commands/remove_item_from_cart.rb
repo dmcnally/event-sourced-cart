@@ -20,7 +20,7 @@ class RemoveItemFromCart
       # add the event to the stream
       stream.push RemovedItemFromCart.new(
         product_id: product_id,
-        product_name: product.name,
+        product_title: product.title,
         cart_id: cart.id,
         timestamp: Time.now.utc
       )

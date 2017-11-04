@@ -21,7 +21,7 @@ class AddItemToCart
       # add the event to the stream
       stream.push AddedItemToCart.new(
         product_id: product_id,
-        product_name: product.name,
+        product_title: product.title,
         quantity: quantity,
         cart_id: cart.id,
         timestamp: Time.now.utc
