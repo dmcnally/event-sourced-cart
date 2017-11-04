@@ -20,6 +20,9 @@ use Rack::Flash
 
 configure :production do
   use Rack::SSL
+
+  # cache static files for a long time
+  set :static_cache_control, [:public, max_age: 60 * 60 * 24]
 end
 
 configure do
