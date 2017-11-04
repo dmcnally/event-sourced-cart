@@ -21,6 +21,7 @@ class UpdateCartItemQuantity
       # add the event to the stream
       stream.push UpdatedCartItemQuantity.new(
         product_id: product_id,
+        product_name: product.name,
         quantity: quantity,
         cart_id: cart.id,
         timestamp: Time.now.utc
@@ -33,8 +34,12 @@ class UpdateCartItemQuantity
   private
 
   def validate_product_exists
-    unless Product.exist?(product_id)
-      errors.add(:product_id, "is invalid")
+    unless product
+      errors.add(:product_id, "does not exist")
     end
+  end
+
+  def product
+    @product ||= Product.find(product_id)
   end
 end

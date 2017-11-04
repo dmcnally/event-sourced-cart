@@ -20,6 +20,7 @@ class RemoveItemFromCart
       # add the event to the stream
       stream.push RemovedItemFromCart.new(
         product_id: product_id,
+        product_name: product.name,
         cart_id: cart.id,
         timestamp: Time.now.utc
       )
@@ -31,8 +32,12 @@ class RemoveItemFromCart
   private
 
   def validate_product_exists
-    unless Product.exist?(product_id)
-      errors.add(:product_id, "is invalid")
+    unless product
+      errors.add(:product_id, "does not exist")
     end
+  end
+
+  def product
+    @product ||= Product.find(product_id)
   end
 end
