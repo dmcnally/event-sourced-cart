@@ -29,15 +29,15 @@ class RemoveItemFromCart
     end
   end
 
+  def product
+    @product ||= Product.find(product_id)
+  end
+
   private
 
   def validate_product_exists
     unless product
       errors.add(:product_id, "does not exist")
     end
-  end
-
-  def product
-    @product ||= Product.find(product_id)
   end
 end

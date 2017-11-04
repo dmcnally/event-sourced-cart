@@ -1,10 +1,19 @@
 <div class='c-product-grid'>
-  <% products.each do |product| %>
+  <% products.shuffle.each do |product| %>
     <div>
       <div class='c-product-result'>
-        <img src='/<%= product.photo %>.jpg' class='c-product-result__photo' />
+        <img src='/<%= product.photo %>-preview.jpg'
+          data-src='/<%= product.photo %>.jpg'
+          class='c-product-result__photo lazyload'
+        />
 
-        <h1 class='c-product-result__name'><%= product.title %></h1>
+        <h1 class='c-product-result__name'>
+          <%= product.title %>
+        </h1>
+
+        <p class='c-product-result__price'>
+          <%= integer_to_currency product.price %>
+        </p>
 
         <form action='/add_item_to_cart' method='post' class='c-product-result__add_to_cart'>
           <input type='hidden' name='product_id' value='<%= product.id %>' />
@@ -17,8 +26,6 @@
   <% end %>
 </div>
 
-<% if cart.empty? %>
-  <div class='c-cart-btn c-cart-btn--disabled'>View Cart (0)</div>
-<% else %>
-  <a class='c-cart-btn' href='/cart'>View Cart (<%= cart.size %>)</a>
+<% unless cart.empty? %>
+  <a class='c-footer-btn' href='/cart'>View Cart (<%= cart.size %>)</a>
 <% end %>

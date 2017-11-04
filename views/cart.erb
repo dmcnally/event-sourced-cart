@@ -1,52 +1,61 @@
-<% if added %>
-  <div class='c-notice c-notice--positive'>Added <%= Product.find(added)&.title %> to your cart.</div>
-<% elsif removed %>
-  <div class='c-notice c-notice--positive'>Removed <%= Product.find(removed)&.title %> from your cart.</div>
-<% end %>
-
 <% if cart.empty? %>
-  <p class='c-notice c-notice--negative'>Your cart is empty.</p>
 
-  <a class='c-cart-btn' href='/'>Browse the catalog</a>
+  <p class='c-notice c-notice--negative'>Your cart is empty.</p>
+  <a class='c-footer-btn' href='/'>Browse the catalog</a>
+
 <% else %>
 
-  <ul>
+  <% if flash[:notice].present? %>
+    <div class='c-notice c-notice--positive'><%= flash[:notice] %></div>
+  <% end %>
+
+  <div class='c-cart'>
     <% cart.line_items.each do |line_item| %>
-      <li>
-        <%= line_item.quantity %> &times; <%= line_item.product.title %>
+      <div class='c-line-item'>
+        <img src='/<%= line_item.product.photo %>-preview.jpg'
+          data-src='/<%= line_item.product.photo %>.jpg'
+          class='c-line-item__photo lazyload'
+        />
+
+        <div class='c-line-item__info'>
+          <p class='c-line-item__name'>
+            <%= line_item.quantity %> &times; <%= line_item.product.title %>
+          </p>
+          <p class='c-line-item__price'>
+            <%= integer_to_currency line_item.total %>
+          </p>
+        </div>
+
         <form action='/update_cart_item_quantity' method='post'>
           <input type='hidden' name='product_id' value='<%= line_item.product_id %>' />
 
-          <select name='quantity'>
+          <select name='quantity' onchange="this.parentNode.submit();">
             <% 0.upto([10, line_item.quantity].max) do |i| %>
               <option
                 value='<%= i %>'
                 <% if i == line_item.quantity %> selected<% end %>
-              ><%= i %></option>
+              >Qty: <%= i %></option>
             <% end %>
           </select>
-
-          <button type='submit'>Update quantity</button>
         </form>
 
         <form action='/remove_item_from_cart' method='post'>
           <input type='hidden' name='product_id' value='<%= line_item.product_id %>' />
-          <button type='submit'>Remove item</button>
+          <button type='submit' class='c-line-item__remove_btn' title='Remove Item'>&times;</button>
         </form>
-      </li>
+      </div>
     <% end %>
-  </ul>
-
-  <p><strong>Total: $<%= sprintf("%.2f", BigDecimal(cart.total) / 100) %></strong></p>
+  </div>
 
   <form action='/place_order' method='post'>
-    <button type='submit'>Place order</button>
+    <button class='c-place-order-btn' type='submit'>
+      Place order
+      <span class='c-place-order-btn__total'>(<%= integer_to_currency cart.total %>)</span>
+    </button>
   </form>
 
-  <p>* Placing orders won't actually process anything</p>
+  <p class='c-note'>(note: placing orders won't actually process&nbsp;anything)</p>
 
-  <p><a href='/'>Add more items</a></p>
-
-  <a class='c-cart-btn' href='/'>Add more items</a>
+  <a class='c-footer-btn' href='/'>Add more items</a>
 
 <% end %>

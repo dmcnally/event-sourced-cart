@@ -2,6 +2,7 @@ require 'sinatra'
 require 'logger'
 require 'securerandom'
 require 'rack/ssl'
+require 'rack-flash'
 require 'kafka'
 
 require_relative 'models/cart'
@@ -15,6 +16,7 @@ require_relative 'commands/remove_item_from_cart'
 require_relative 'commands/update_cart_item_quantity'
 
 enable :sessions
+use Rack::Flash
 
 configure :production do
   use Rack::SSL
@@ -55,9 +57,7 @@ end
 
 get '/cart' do
   erb :cart, layout: :layout, locals: {
-    cart: Cart.new(session),
-    added: params[:added],
-    removed: params[:removed]
+    cart: Cart.new(session)
   }
 end
 
@@ -69,7 +69,8 @@ post '/add_item_to_cart' do
   )
 
   if command.execute(settings.event_stream)
-    [302, { 'Location' => "/cart?added=#{params['product_id']}" }, '']
+    flash[:notice] = "Added #{command.quantity} x #{command.product.title} to your cart"
+    [302, { 'Location' => '/cart' }, '']
   else
     [200, {}, command.errors.full_messages.join("\n")]
   end
@@ -82,7 +83,8 @@ post '/remove_item_from_cart' do
   )
 
   if command.execute(settings.event_stream)
-    [302, { 'Location' => "/cart?removed=#{params['product_id']}" }, '']
+    flash[:notice] = "Removed #{command.product.title} from your cart"
+    [302, { 'Location' => '/cart' }, '']
   else
     [200, {}, command.errors.full_messages.join("\n")]
   end
@@ -96,6 +98,9 @@ post '/update_cart_item_quantity' do
   )
 
   if command.execute(settings.event_stream)
+    if Integer(command.quantity) > 0
+      flash[:notice] = "Updated #{command.product.title} to a quantity of #{command.quantity}"
+    end
     [302, { 'Location' => '/cart' }, '']
   else
     [200, {}, command.errors.full_messages.join("\n")]
@@ -113,5 +118,11 @@ post '/place_order' do
     erb :order_confirmation, layout: :layout, locals: { line_items: line_items, order_id: command.order_id }
   else
     [200, {}, command.errors.full_messages.join("\n")]
+  end
+end
+
+helpers do
+  def integer_to_currency(number, unit: '$')
+    "#{ unit }#{ "%.2f" % (BigDecimal.new(number) / 100).round(2) }"
   end
 end
