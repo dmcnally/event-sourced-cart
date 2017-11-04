@@ -1,15 +1,20 @@
 -
   id: 1
   title: Jab Jab Jab, Right Hook
-  price: 2000
+  price: 1360
   photo: gary-vaynerchuk-jab-jab-jab
 -
   id: 2
   title: Intercom on Starting Up
-  price: 1250
+  price: 1000
   photo: intercom-starting-up
 -
   id: 3
   title: Lean Startup
-  price: 1750
+  price: 974
   photo: lean-startup
+-
+  id: 4
+  title: The Best Interface Is No Interface
+  price: 2198
+  photo: the-best-interface-is-no-interface
